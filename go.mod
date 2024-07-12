@@ -1,4 +1,4 @@
-module github.com/EraldCaka/cron-job-example
+module github.com/EraldCaka/croner
 
 go 1.22.1
 
