@@ -5,9 +5,12 @@ import (
 	"sync"
 )
 
+type Croner interface {
+	RegisterAllJobsInsideCron()
+}
+
 func (c *Cron) Close() {
 	c.Conn.Stop()
-	c.Conn.Entries()
 }
 
 func (c *Cron) Start() {
@@ -15,25 +18,16 @@ func (c *Cron) Start() {
 }
 
 func (c *Cron) AddJob(cronExpression string, f func()) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Mu.Lock()
+	defer c.Mu.Unlock()
 	c.Jobs = append(c.Jobs, &Job{CronExpression: cronExpression, Cron: f})
-}
-
-func (c *Cron) RegisterAllJobsInsideCron() {
-	// tried many instances of the same job so i could test the concurrency of all the jobs
-	c.AddJob(c.GetCustomersDataJob())
-	c.AddJob(c.GetCustomersDataJob())
-	c.AddJob(c.GetCustomersDataJob())
-	c.AddJob(c.GetCustomersDataJob())
-	c.AddJob(c.GetCustomersDataJob())
 }
 
 func (c *Cron) StartJobs() {
 	var wg sync.WaitGroup
 
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Mu.Lock()
+	defer c.Mu.Unlock()
 	defer wg.Wait()
 
 	for i, job := range c.Jobs {
