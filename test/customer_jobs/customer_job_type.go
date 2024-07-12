@@ -1,6 +1,6 @@
 package customer_jobs
 
-import "github.com/EraldCaka/cron-job-example/jobs"
+import "github.com/EraldCaka/croner/jobs"
 
 type CustomerJob struct {
 	*jobs.Cron
