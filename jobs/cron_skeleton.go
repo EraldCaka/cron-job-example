@@ -6,8 +6,7 @@ import (
 
 func ConnectionSkeleton() *Cron {
 	return &Cron{
-		Conn:      cron.New(),
-		Jobs:      make([]*Job, 0),
-		Customers: make([]*Customer, 0),
+		Conn: cron.New(),
+		Jobs: make([]*Job, 0),
 	}
 }
