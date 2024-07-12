@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/EraldCaka/cron-job-example/jobs"
-	"github.com/EraldCaka/cron-job-example/test/customer_jobs"
+	"github.com/EraldCaka/croner/jobs"
+	"github.com/EraldCaka/croner/test/customer_jobs"
 )
 
 func main() {
