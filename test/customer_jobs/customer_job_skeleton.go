@@ -1,6 +1,6 @@
 package customer_jobs
 
-import "github.com/EraldCaka/cron-job-example/jobs"
+import "github.com/EraldCaka/croner/jobs"
 
 func CustomerConn(baseCron *jobs.Cron) *CustomerJob {
 	return &CustomerJob{
