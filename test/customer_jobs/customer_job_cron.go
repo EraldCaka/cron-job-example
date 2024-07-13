@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-func (c *CustomerJob) GetCustomersDataJob() (string, func()) {
+func (c *CustomerJob) GetCustomersDataAndExcelExportJob() (string, func()) {
 	return "* * * * *", func() {
 		var wg sync.WaitGroup
 		fmt.Println("get customers data job")
@@ -19,6 +19,7 @@ func (c *CustomerJob) GetCustomersDataJob() (string, func()) {
 				fmt.Printf("%s has %d money\n", customer.Name, customer.Money)
 			}(customer)
 		}
+		c.InsertCustomerDataInsideExcelFile()
 	}
 }
 func (c *CustomerJob) UpdateCustomerDataJob() (string, func()) {
