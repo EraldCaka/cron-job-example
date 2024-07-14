@@ -3,6 +3,7 @@ package customer_jobs
 import (
 	"fmt"
 	"github.com/xuri/excelize/v2"
+	"gopkg.in/gomail.v2"
 	"log"
 )
 
@@ -61,12 +62,37 @@ func (c *CustomerJob) InsertCustomerDataInsideExcelFile() *excelize.File {
 	f.SetCellStyle("Customers-1", "A2", fmt.Sprintf("C%v", len(c.Customers)+1), dataStyle)
 
 	f.SetActiveSheet(index)
-
-	if err := f.SaveAs("CustomersData.xlsx"); err != nil {
+	err = f.DeleteSheet("Sheet1")
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
+	fileName := "CustomersData.xlsx"
+	if err := f.SaveAs(fileName); err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
 	fmt.Println("Data written to CustomersData.xlsx successfully")
+	sendEmail(fileName)
+
 	return f
+}
+func sendEmail(filename string) {
+	m := gomail.NewMessage()
+
+	m.SetHeader("From", "name@example.com")
+	m.SetHeader("To", "name@exmple.com")
+	m.SetHeader("Subject", "Customer Data")
+	m.SetBody("text/plain", "Please find the attached customer data.")
+	m.Attach(filename)
+
+	d := gomail.NewDialer("smtp.example.com", 587, "name@example.com", "secret password")
+
+	if err := d.DialAndSend(m); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Email sent successfully")
 }
